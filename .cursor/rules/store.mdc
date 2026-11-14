@@ -1,0 +1,11 @@
+---
+description: Migration and table rules for the plugin-owned verifactu_* tables.
+globs: src/store/**
+alwaysApply: false
+---
+
+# Store
+
+- Only `src/store/migrations.js` creates or alters tables. Add a `V<n>` block, bump `SCHEMA_VERSION`, insert the version row in the same transaction; migrations stay idempotent.
+- Every table and trigger is prefixed `verifactu_`. Never touch core tables.
+- `verifactu_registration` rows are never deleted and immutable except delivery columns; don't weaken the triggers.

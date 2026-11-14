@@ -1,9 +1,24 @@
 name: CI
 
+# Docs-only changes (docs/**, **/*.md, .agents/**, .cursor/**, .cursorignore, LICENSE) skip CI.
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '.agents/**'
+      - '.cursor/**'
+      - '.cursorignore'
+      - 'LICENSE'
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '.agents/**'
+      - '.cursor/**'
+      - '.cursorignore'
+      - 'LICENSE'
 
 jobs:
   test:

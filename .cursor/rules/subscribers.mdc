@@ -1,0 +1,12 @@
+---
+description: Sync vs durable subscriber rules for the VeriFactu plugin.
+globs: index.js,src/subscribers/**,src/soap/**
+alwaysApply: false
+---
+
+# Subscribers
+
+- `subscribeSync` runs inside the sale transaction, before the core commits: only `connection.database`, `src/hash`, `src/xml`; no network, no file I/O, no `secrets.get`, no real clock. A throw rolls back the sale and invoice.
+- `subscribeDurable` names start with `verifactu:`. Handlers are async, run after commit, are retried by the bus and must be idempotent by `invoice_id`, sending in `seq` order.
+- Durable handlers change only delivery columns (`status`, `attempts`, `last_error`, `aeat_csv`, `sent_at`).
+- `register` validates the context and throws clear errors; keep checks there, not inside handlers.

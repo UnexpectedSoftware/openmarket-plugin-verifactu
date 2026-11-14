@@ -1,0 +1,12 @@
+---
+description: How the VeriFactu plugin tests are written and run (node:test, fakes, AEAT vectors).
+globs: test/**
+alwaysApply: false
+---
+
+# Tests
+
+- `node:test` + `node:assert/strict`, files `test/**/*.test.js`. Run one with `node --test test/<name>.test.js`.
+- Build the context with `test/fakes` (fake bus, event classes, in-memory `node:sqlite`); events carry v1 payloads shaped like OpenMarket's contract fixtures.
+- Hash tests use the official AEAT vectors in `test/vectors`, never values computed by the code under test.
+- Assert what the caller sees: rows written, subscribers registered, errors thrown. Never weaken, skip or delete a test to pass.

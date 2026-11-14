@@ -1,17 +1,16 @@
 # openmarket-plugin-verifactu: rules for coding agents
 
-OpenMarket plugin (CommonJS, Node 24, `node:sqlite`). Plan and phases: `docs/PLAN.md`. Workflow: `.grok/skills/verifactu-plugin/SKILL.md`.
+OpenMarket plugin for AEAT VERI*FACTU. CommonJS, Node 24, `node:sqlite`, JSDoc + `checkJs` (no `.ts` files). Phases: `docs/PLAN.md`; one phase per PR, acceptance criteria in its GitHub issue. Host API: `docs/plugins.md` in UnexpectedSoftware/openMarket.
 
 ## Golden rules
-1. **Never import OpenMarket source.** Everything comes from `register(context)`: `apiVersion`, `eventBus` (`subscribeSync`, `subscribeDurable`, `ofType`), `connection.database`, `config`, `events`. If a field is missing from an event payload, it must be added to OpenMarket core first; never query core tables.
-2. **Sync handlers are local.** `subscribeSync` runs inside the sale transaction: fast, deterministic, no network, no file I/O beyond the shared connection. A throw rolls back the sale on purpose.
-3. **Network only in durable handlers** (`verifactu:send…`). They must be idempotent (keyed by `invoice_id`) and treat "already registered" as success.
-4. **Tables are prefixed `verifactu_`** and migrated by `src/store/migrations.js` (bump `SCHEMA_VERSION`, keep migrations idempotent). Registrations are never deleted and only delivery fields change; don't weaken the triggers.
-5. **JSDoc + `checkJs`, no TypeScript files.** `npm run typecheck` must pass.
-6. **Self-contained release.** Runtime deps get bundled into `dist/verifactu/`; keep them few.
+1. **Never import OpenMarket source or query core tables.** Everything comes from `register(context)`: `apiVersion`, `eventBus` (`subscribeSync`, `subscribeDurable`, `ofType`), `connection.database`, `config`, `secrets`, `receipt`, `events`. A missing payload field gets added to core first.
+2. **Sync handlers are local:** fast, deterministic, no network, no clock but the payload. A throw rolls the sale back on purpose.
+3. **Network only in durable `verifactu:*` handlers**, idempotent by `invoice_id`; "already registered" is success.
+4. **Tables are `verifactu_*`**, migrated only in `src/store/migrations.js`. Registrations are never deleted; only delivery fields change.
+5. **Self-contained release:** runtime deps are bundled into `dist/verifactu/`; keep them few. `plugin.json` and `package.json` versions stay equal.
 
-## Layout
-`index.js` (register) · `src/store` · `src/subscribers` · `src/hash` · `src/xml` · `src/soap` · `src/qr` · `test/fakes` · `test/vectors` · `scripts/release.js`
+## Skill (load on demand)
+- `verifactu-plugin`: recipes per phase (schema, sync handler, durable sender, receipt block, release) and the done-checklist. Load it before changing code.
 
-## Before you say you're done
-`npm test && npm run typecheck && npm run build`. Keep `plugin.json` and `package.json` versions equal.
+## Commands
+`npm ci`, `npm test`, `npm run typecheck`, `npm run build`. Never weaken, skip or delete a test to pass a gate.
