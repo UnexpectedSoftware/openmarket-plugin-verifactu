@@ -8,7 +8,8 @@
     "target": "es2023",
     "moduleResolution": "node",
     "types": ["node"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "include": ["index.js", "src/**/*.js", "test/**/*.js", "scripts/**/*.js"]
 }
