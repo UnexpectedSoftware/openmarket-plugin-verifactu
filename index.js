@@ -26,7 +26,7 @@ const REQUIRED_EVENTS = ['InvoiceIssued', 'InvoiceCancelled'];
 
 /**
  * Entry point called by OpenMarket's plugin loader.
- * Phase 1: checks the API version, runs migrations and registers stub subscribers.
+ * Checks the API version, runs migrations and registers subscribers.
  * @param {PluginContext} context
  */
 function register(context) {
