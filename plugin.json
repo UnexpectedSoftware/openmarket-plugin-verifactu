@@ -3,13 +3,13 @@
   "name": "VeriFactu",
   "description": "AEAT VERI*FACTU compliance for OpenMarket: chained invoice registrations, QR on the ticket and delivery to the AEAT.",
   "version": "0.1.0",
-  "openmarket": ">=1.15.0 <2",
+  "openmarket": ">=1.22.0 <2",
   "main": "index.js",
   "settings": [
     {"key": "environment", "label": "Environment (pruebas | produccion)", "required": true},
     {"key": "nif", "label": "Issuer NIF", "required": true},
     {"key": "softwareId", "label": "Software id (IdSistemaInformatico)", "required": true},
     {"key": "certificatePath", "label": "Certificate path (.p12/.pfx)", "required": true},
-    {"key": "certificatePassword", "label": "Certificate password", "required": false}
+    {"key": "certificatePassword", "label": "Certificate password", "required": false, "secret": true}
   ]
 }

@@ -75,6 +75,8 @@ function fakeContext(overrides = {}) {
     eventBus: fakeEventBus(),
     connection: fakeConnection(),
     config: {},
+    secrets: {get: async (/** @type {string} */ _key) => null},
+    receipt: {register: (/** @type {string} */ _slot, /** @type {Function} */ _render) => () => {}},
     events: fakeEvents(),
     ...overrides
   };

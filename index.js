@@ -18,7 +18,9 @@ const REQUIRED_EVENTS = ['InvoiceIssued', 'InvoiceCancelled'];
  * @property {number} apiVersion
  * @property {PluginEventBus} eventBus
  * @property {{database: import('node:sqlite').DatabaseSync}} connection
- * @property {Record<string, string>} [config]
+ * @property {Record<string, string>} [config] saved settings; secret settings are not included
+ * @property {{get: (key: string) => Promise<string | null>}} secrets secret settings (e.g. certificatePassword); call only from durable handlers
+ * @property {{register: (slot: 'receipt.header.fiscal' | 'receipt.footer', render: (invoicePayload: object | null) => object[]) => (() => void)}} receipt ticket blocks; render is synchronous and local
  * @property {Record<string, Function>} events
  */
 
