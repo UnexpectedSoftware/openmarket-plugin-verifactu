@@ -54,9 +54,11 @@ scripts/release.js (builds dist/verifactu/ and verifactu-<version>.zip)
 CREATE TABLE IF NOT EXISTS verifactu_registration (
   seq INTEGER PRIMARY KEY AUTOINCREMENT,
   id TEXT NOT NULL UNIQUE,
-  invoice_id TEXT NOT NULL UNIQUE,
+  invoice_id TEXT NOT NULL,
   invoice_number TEXT NOT NULL,
   kind TEXT NOT NULL,            -- ALTA | ANULACION
+  issuer_nif TEXT NOT NULL,
+  expedition_date TEXT NOT NULL, -- DD-MM-YYYY, as written in the XML
   previous_hash TEXT,
   hash TEXT NOT NULL,
   xml TEXT NOT NULL,
@@ -65,11 +67,12 @@ CREATE TABLE IF NOT EXISTS verifactu_registration (
   last_error TEXT,
   aeat_csv TEXT,
   created_at TEXT NOT NULL,
-  sent_at TEXT
+  sent_at TEXT,
+  UNIQUE (invoice_id, kind)
 );
 CREATE TABLE IF NOT EXISTS verifactu_schema_version (version INTEGER NOT NULL);
 ~~~
-Registrations are never updated (except delivery fields) nor deleted; add triggers.
+One invoice can have one `ALTA` and one `ANULACION`. `issuer_nif` and `expedition_date` are that row's chain identity, so the next `RegistroAnterior` does not parse XML. Registrations are never updated (except delivery fields) nor deleted; add triggers. Phase 4 idempotency keys on `(invoice_id, kind)`.
 
 ## QR
 - Built from invoice data + official URL format (AEAT QR spec).

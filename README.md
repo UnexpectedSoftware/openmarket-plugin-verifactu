@@ -2,7 +2,7 @@
 
 VeriFactu (AEAT, Spain) compliance as a drop-in plugin for [OpenMarket](https://github.com/UnexpectedSoftware/openMarket). It chains every invoice registration with SHA-256, adds the QR and "VERI*FACTU" legend to the ticket, and sends the registrations to the AEAT. OpenMarket core contains no VeriFactu code; this plugin uses only the `register(context)` API described in OpenMarket's [`docs/plugins.md`](https://github.com/UnexpectedSoftware/openMarket/blob/master/docs/plugins.md).
 
-> **Status: phase 2 — hash chain.** The plugin loads, checks the API version, creates its tables, registers stub subscribers, and computes the AEAT SHA-256 chain. It does **not** yet build XML, send to the AEAT, or print a QR. Do not use it for compliance yet. See [docs/PLAN.md](docs/PLAN.md) for the phases.
+> **Status: phase 3 — sync registration.** The plugin loads, checks the API version, creates its tables, and on each invoice issue or cancellation writes a chained registration (hash + XML) inside the sale transaction. It does **not** yet send to the AEAT or print a QR. Do not use it for compliance yet. See [docs/PLAN.md](docs/PLAN.md) for the phases.
 
 ## Install
 1. Download `verifactu-<version>.zip` from the [releases](https://github.com/UnexpectedSoftware/openmarket-plugin-verifactu/releases).

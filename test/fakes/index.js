@@ -68,7 +68,7 @@ function fakeConnection() {
   return {database: new DatabaseSync(':memory:')};
 }
 
-/** @param {Partial<{apiVersion: number}>} [overrides] */
+/** @param {Partial<{apiVersion: number, config: Record<string, string>, events: Record<string, Function>}>} [overrides] */
 function fakeContext(overrides = {}) {
   return {
     apiVersion: 1,
