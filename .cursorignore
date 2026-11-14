@@ -1,0 +1,7 @@
+# Cursor already skips everything in .gitignore (node_modules, dist, *.zip,
+# coverage) and its default list (lockfiles, images, archives). This file only
+# adds tracked files that are noise for the agent. It is a hard block: ignored
+# files can't be read or @-mentioned, so keep it short.
+
+# Apache-2.0 licence text (~2.5k tokens), never needed for code changes.
+LICENSE
